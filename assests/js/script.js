@@ -16,13 +16,20 @@ var taskFormHandler = function (event) {
 
     formEl.reset();
 
-    // Package data as an object
-    var taskDataObj = {
-        name: taskNameInput,
-        type: taskTypeInput
-    };
+    var isEdit = formEl.hasAttribute("data-task-id");
 
-    // Send it as an arg
+
+    if (isEdit) {
+        var taskId = formEl.getAttribute("data-task-id");
+        comppleteEditTask(taskNameInput, taskTypeInput, taskId);
+    }
+
+    else {
+        var taskDataObj = {
+            name: taskNameInput,
+            type: taskTypeInput
+        };
+    }
     createTeskEl(taskDataObj);
 }
 
@@ -123,6 +130,17 @@ var editTask = function (taskId) {
 
     document.querySelector("#save-task").textContent = "Save Task";
 };
+
+var comppleteEditTask = function (taskName, taskType, taskId) {
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+    taskSelected.querySelector("h3.task-name").textContent = taskName;
+    taskSelected.querySelector("span.task-type").textContent = taskType;
+
+    alert("Task Updated!")
+
+    formEl.removeAttribute("data-task-id");
+    document.querySelector("#save-task").textContent = "Add Task";
+}
 
 
 formEl.addEventListener("submit", taskFormHandler)
